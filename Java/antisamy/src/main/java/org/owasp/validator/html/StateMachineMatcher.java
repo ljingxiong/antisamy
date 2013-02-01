@@ -14,18 +14,22 @@ public class StateMachineMatcher {
     private boolean canTerminate = false;
     private char character;
 
-    public StateMachineMatcher(boolean caseSensitive, char character, int pos, CharSequence... strings) {
+    public StateMachineMatcher(boolean caseSensitive, CharSequence... strings) {
+        this(caseSensitive, '@', 0, strings);
+    }
+
+    private StateMachineMatcher(boolean caseSensitive, char character, int pos, CharSequence... strings) {
         this.character = character;
         for (CharSequence string : strings) {
             int len = string.length();
             if (pos < len) {
                 char c = string.charAt(pos);
-                if (pos == 0 || character == string.charAt(pos - 1)) {
+                if (pos == 0 || Character.toLowerCase(character) == Character.toLowerCase(string.charAt(pos - 1))) {
                     StateMachineMatcher matcher = getOrCreateMatcher(caseSensitive, pos + 1, c, strings);
                     matcher.canTerminate = pos == (len - 1);
                     char other = Character.isLowerCase(c) ? Character.toUpperCase(c) : Character.toLowerCase(c);
                     if (!caseSensitive && other != c) {
-                        matcher = getOrCreateMatcher(caseSensitive, pos + 1, c, string);
+                        matcher = getOrCreateMatcher(caseSensitive, pos + 1, other, string);
                         matcher.canTerminate = pos == (len - 1);
                     }
                 }
@@ -50,8 +54,7 @@ public class StateMachineMatcher {
     private boolean matches(CharSequence charSequence, int pos) {
         if (pos >= charSequence.length()) return canTerminate;
         char c = charSequence.charAt(pos);
-        StateMachineMatcher matcher;
-        matcher = getMatcher(c);
+        StateMachineMatcher matcher = getMatcher(c);
         return matcher != null && matcher.matches(charSequence, ++pos);
     }
 
