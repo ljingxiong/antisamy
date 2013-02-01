@@ -504,7 +504,7 @@ public class AntiSamyDOMScanner extends AbstractAntiSamyScanner {
             String name = attribute.getNodeName();
             String value = attribute.getNodeValue();
 
-            Attribute attr = tag.getAttributeByName(name.toLowerCase());
+            Attribute attr = tag.getAttributeByName(name);
 
             /**
              * If we there isn't an attribute by that name in our policy
@@ -557,7 +557,7 @@ public class AntiSamyDOMScanner extends AbstractAntiSamyScanner {
 
                 if (attr != null) {
 
-                    if (attr.containsAllowedValue( value.toLowerCase())) {
+                    if (attr.containsAllowedValue( value.toLowerCase())){
                         isAttributeValid = true;
                     }
 

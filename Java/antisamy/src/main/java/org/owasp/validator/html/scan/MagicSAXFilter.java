@@ -271,8 +271,7 @@ public class MagicSAXFilter extends DefaultFilter implements XMLDocumentFilter {
 				for (int i = 0; i < attributes.getLength(); i++) {
 					String name = attributes.getQName(i);
 					String value = attributes.getValue(i);
-					String nameLower = name.toLowerCase();
-					Attribute attribute = tag.getAttributeByName(nameLower);
+					Attribute attribute = tag.getAttributeByName(name);
 					if (attribute == null) {
 						// no policy defined, perhaps it is a global attribute
 						attribute = policy.getGlobalAttributeByName(name);

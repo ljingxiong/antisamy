@@ -28,7 +28,6 @@
  */
 package org.owasp.validator.html.model;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -60,21 +59,21 @@ public class Property {
 	 * Return a <code>List</code> of allowed regular expressions
 	 * @return A <code>List</code> of allowed regular expressions.
 	 */
-	public List getAllowedRegExp() {
+	public List<Pattern> getAllowedRegExp() {
 		return allowedRegExp;
 	}
 
     /**
 	 * @return A <code>List</code> of allowed literal values.
 	 */
-	public List getAllowedValues() {
+	public List<String> getAllowedValues() {
 		return allowedValues;
 	}
 
     /**
 	 * @return A <code>List</code> of allowed shorthand references.
 	 */
-	public List getShorthandRefs() {
+	public List<String> getShorthandRefs() {
 		return shorthandRefs;
 	}
 

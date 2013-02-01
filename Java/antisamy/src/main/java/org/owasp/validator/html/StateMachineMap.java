@@ -17,14 +17,14 @@ public class StateMachineMap<T> {
     private final boolean caseSensitive;
 
     public StateMachineMap(boolean caseSensitive, Map<String, T> items) {
-        this(caseSensitive, '@', 0, items);
+        this(caseSensitive, '@', items);
     }
 
     public StateMachineMap(boolean caseSensitive,  char character) {
         this.character = character;
         this.caseSensitive = caseSensitive;
     }
-    private StateMachineMap(boolean caseSensitive, char character, int pos, Map<String, T> items) {
+    private StateMachineMap(boolean caseSensitive, char character, Map<String, T> items) {
         this.character = caseSensitive ? character : Character.toLowerCase(character);
         this.caseSensitive = caseSensitive;
         for (String string : items.keySet()) {

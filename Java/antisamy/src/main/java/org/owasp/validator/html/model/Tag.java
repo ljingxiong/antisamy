@@ -24,6 +24,8 @@
 
 package org.owasp.validator.html.model;
 
+import org.owasp.validator.html.StateMachineMap;
+
 import java.util.*;
 
 /**
@@ -41,6 +43,7 @@ public class Tag {
       * These are the fields pulled from the policy XML.
       */
     private final Map<String, Attribute> allowedAttributes;
+    private final StateMachineMap<Attribute> allowedAttributesSm;
     private final String name;
     private final String action;
 
@@ -48,6 +51,7 @@ public class Tag {
     public Tag(String name, Map<String, Attribute> tagAttributes, String action) {
         this.name = name;
         this.allowedAttributes = Collections.unmodifiableMap(tagAttributes);
+        this.allowedAttributesSm = new StateMachineMap<Attribute>(false, tagAttributes);
         this.action = action;
     }
 
@@ -141,6 +145,6 @@ public class Tag {
      * @return The <code>Attribute</code> object associated with the name, or
      */
     public Attribute getAttributeByName(String name) {
-        return allowedAttributes.get(name);
+        return allowedAttributesSm.get(name);
     }
 }
