@@ -88,11 +88,11 @@ public class Policy {
     private static char REGEXP_BEGIN = '^';
     private static char REGEXP_END = '$';
 
-    private final Map<String, AntiSamyPattern> commonRegularExpressions;
-    protected final Map<String, Tag> tagRules;
-    private final Map<String, Property> cssRules;
-    protected final Map<String, String> directives;
-    private final Map<String, Attribute> globalAttributes;
+    private final StateMachineMap<AntiSamyPattern> commonRegularExpressions;
+    protected final StateMachineMap<Tag> tagRules;
+    private final StateMachineMap<Property> cssRules;
+    protected final StateMachineMap<String> directives;
+    private final StateMachineMap<Attribute> globalAttributes;
 
     private final TagMatcher allowedEmptyTagsMatcher;
     private final TagMatcher requiresClosingTagsMatcher;
@@ -129,7 +129,7 @@ public class Policy {
      * @return The CSS Property associated with the name specified, or null if none is found.
      */
     public Property getPropertyByName(String propertyName) {
-        return cssRules.get(propertyName.toLowerCase());
+        return cssRules.get(propertyName);
     }
 
     /**
@@ -202,20 +202,27 @@ public class Policy {
     protected Policy(ParseContext parseContext) throws PolicyException {
         this.allowedEmptyTagsMatcher = new TagMatcher(parseContext.allowedEmptyTags);
         this.requiresClosingTagsMatcher = new TagMatcher(parseContext.requireClosingTags);
+        /*
         this.commonRegularExpressions = Collections.unmodifiableMap(parseContext.commonRegularExpressions);
         this.tagRules = Collections.unmodifiableMap(parseContext.tagRules);
         this.cssRules = Collections.unmodifiableMap(parseContext.cssRules);
         this.directives = Collections.unmodifiableMap(parseContext.directives);
         this.globalAttributes = Collections.unmodifiableMap(parseContext.globalAttributes);
+          */
+        this.commonRegularExpressions = new StateMachineMap<AntiSamyPattern>(false, parseContext.commonRegularExpressions);
+        this.tagRules = new StateMachineMap<Tag>(false, parseContext.tagRules);
+        this.cssRules = new StateMachineMap<Property>(false, parseContext.cssRules);
+        this.directives = new StateMachineMap<String>(false, parseContext.directives);
+        this.globalAttributes = new StateMachineMap<Attribute>(false,parseContext.globalAttributes);
     }
 
     protected Policy(Policy old, Map<String, String> directives, Map<String, Tag> tagRules) {
         this.allowedEmptyTagsMatcher = old.allowedEmptyTagsMatcher;
         this.requiresClosingTagsMatcher = old.requiresClosingTagsMatcher;
         this.commonRegularExpressions = old.commonRegularExpressions;
-        this.tagRules = tagRules;
+        this.tagRules = new StateMachineMap<Tag>(false, tagRules);
         this.cssRules = old.cssRules;
-        this.directives = directives;
+        this.directives = new StateMachineMap<String>(false, directives);
         this.globalAttributes = old.globalAttributes;
     }
 
@@ -710,7 +717,7 @@ public class Policy {
      * @return An Attribute associated with the global-attribute lookup name specified.
      */
     public Attribute getGlobalAttributeByName(String name) {
-        return globalAttributes.get(name.toLowerCase());
+        return globalAttributes.get(name);
 
     }
 

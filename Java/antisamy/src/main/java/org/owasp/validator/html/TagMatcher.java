@@ -35,11 +35,14 @@ import java.util.Set;
  */
 public class TagMatcher {
     private final Set<String> allowedLowercase = new HashSet<String>();
+    private final StateMachineMatcher stateMachineMatcher;
 
-    public TagMatcher(Iterable<String> allowedValues) {
+    public TagMatcher(List<String> allowedValues) {
         for (String item : allowedValues) {
             allowedLowercase.add(item.toLowerCase());
         }
+
+        stateMachineMatcher = new StateMachineMatcher(false, allowedValues.toArray(new CharSequence[allowedValues.size()]));
     }
 
     /**
@@ -50,7 +53,8 @@ public class TagMatcher {
      * @return true if the tag name matches this mach
      */
     public boolean matches(String tagName) {
-        return allowedLowercase.contains(tagName.toLowerCase());
+        return stateMachineMatcher.matches( tagName);
+        //return allowedLowercase.contains(tagName.toLowerCase());
     }
 
     public int size() {

@@ -260,7 +260,7 @@ public class AntiSamyDOMScanner extends AbstractAntiSamyScanner {
 
         final String tagName = ele.getNodeName();
         final String tagNameLowerCase = tagName.toLowerCase();
-        Tag tagRule = policy.getTagByLowercaseName(tagNameLowerCase);
+        Tag tagRule = policy.getTagByLowercaseName(tagName);
 
         /*
          * If <param> and no policy and isValidateParamAsEmbed and policy in

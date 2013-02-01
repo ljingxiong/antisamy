@@ -86,7 +86,7 @@ public class CssValidator {
 		Property property = null;
 
 		if (name != null) {
-			property = policy.getPropertyByName(name.toLowerCase());
+			property = policy.getPropertyByName(name);
 		}
 
 		// if we were able to find the property by name, validate the value

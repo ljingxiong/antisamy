@@ -212,7 +212,7 @@ public class MagicSAXFilter extends DefaultFilter implements XMLDocumentFilter {
 	public void startElement(QName element, XMLAttributes attributes, Augmentations augs) throws XNIException {
 		// see if we have a policy for this tag.
         String tagNameLowerCase = element.localpart.toLowerCase();
-        Tag tag = policy.getTagByLowercaseName(tagNameLowerCase);
+        Tag tag = policy.getTagByLowercaseName(element.localpart);
 
 		/*
 		 * Handle the automatic translation of <param> to nested <embed> for IE.
@@ -275,7 +275,7 @@ public class MagicSAXFilter extends DefaultFilter implements XMLDocumentFilter {
 					Attribute attribute = tag.getAttributeByName(nameLower);
 					if (attribute == null) {
 						// no policy defined, perhaps it is a global attribute
-						attribute = policy.getGlobalAttributeByName(nameLower);
+						attribute = policy.getGlobalAttributeByName(name);
 					}
 					// boolean isAttributeValid = false;
 					if ("style".equalsIgnoreCase(name)) {
