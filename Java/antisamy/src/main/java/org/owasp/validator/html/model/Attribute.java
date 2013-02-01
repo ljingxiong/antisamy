@@ -95,7 +95,7 @@ public class Attribute  {
                 description != null && description.length() != 0 ? description : this.description);
     }
 
-    public String matcherRegEx(boolean hasNext){
+    String matcherRegEx(boolean hasNext){
         // <p (id=#([0-9.*{6})|sdf).*>
 
         StringBuilder regExp = new StringBuilder();
@@ -143,6 +143,5 @@ public class Attribute  {
             }
         }
         return regExp.toString();
-
     }
 }

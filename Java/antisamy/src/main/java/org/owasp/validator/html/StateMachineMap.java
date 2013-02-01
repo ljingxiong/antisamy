@@ -50,15 +50,17 @@ public class StateMachineMap<T> {
     }
 
     public T get(String charSequence) {
+        if (charSequence.length() == 0) return item;
         return get(charSequence, 0);
     }
 
     private T get(String charSequence, int pos) {
-        if (pos >= charSequence.length()) return item;
-        char c = charSequence.charAt(pos);
-        if (!caseSensitive ) c = Character.toLowerCase(c);
-        StateMachineMap<T> matcher = getMatcher(c);
-        return matcher != null ? matcher.get(charSequence, ++pos) : null;
+        StateMachineMap<T> current = this;
+        while (current != null && pos < charSequence.length() ){
+            char c = caseSensitive ? charSequence.charAt(pos++) : Character.toLowerCase(charSequence.charAt(pos++));
+            current = current.getMatcher(c);
+        }
+        return current != null ? current.item : null;
     }
 
     private StateMachineMap<T> getMatcher(char c) {
